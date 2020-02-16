@@ -4,6 +4,7 @@ import br.com.concrete.teste.model.ApiError;
 import br.com.concrete.teste.model.User;
 import br.com.concrete.teste.service.TokenService;
 import br.com.concrete.teste.service.UserService;
+import br.com.concrete.teste.util.Constantes;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -33,13 +34,13 @@ public class LoginController {
     @PostMapping("/")
     public ResponseEntity<?> login(@RequestBody User user, HttpServletResponse response){
         if(!this.userService.checkEmail(user.getEmail())) {
-            return new ResponseEntity<>(new ApiError("Usuário e/ou senha inválidos"), HttpStatus.OK);
+            return new ResponseEntity<>(new ApiError(Constantes.INVALID_USER_OR_PASSWORD), HttpStatus.OK);
         }
 
         User userLogin = this.userService.login(user.getEmail(), user.getPassword());
 
         if(userLogin.getToken()==null) {
-            return new ResponseEntity<>(new ApiError("Usuário e/ou senha inválidos"), HttpStatus.UNAUTHORIZED);
+            return new ResponseEntity<>(new ApiError(Constantes.INVALID_USER_OR_PASSWORD), HttpStatus.UNAUTHORIZED);
         }
 
         this.tokenService.addAuthentication(response, userLogin.getToken());

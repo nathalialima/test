@@ -15,6 +15,6 @@ public class CustomAccessDeniedHandler implements AccessDeniedHandler {
         System.out.println("OOOOO");
         response.setContentType("application/json;charset=UTF-8");
         response.setStatus(403);
-        response.getWriter().write("{mensagem : 'Não Autorizado'}");
+        response.getWriter().write("{\"mensagem\" : \"Não Autorizado\"}");
     }
 }

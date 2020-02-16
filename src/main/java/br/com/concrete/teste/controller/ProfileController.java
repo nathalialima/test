@@ -4,6 +4,7 @@ import br.com.concrete.teste.model.ApiError;
 import br.com.concrete.teste.model.User;
 import br.com.concrete.teste.service.TokenService;
 import br.com.concrete.teste.service.UserService;
+import br.com.concrete.teste.util.Constantes;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -32,15 +33,15 @@ public class ProfileController {
         User user = this.userService.getUser(id);
 
         if(user==null){
-            return new ResponseEntity<>(new ApiError("Não autorizado"), HttpStatus.UNAUTHORIZED);
+            return new ResponseEntity<>(new ApiError(Constantes.UNAUTHORIZED), HttpStatus.UNAUTHORIZED);
         }
 
         if(!this.tokenService.getTokenHeader(request).equals(user.getToken())){
-            return new ResponseEntity<>(new ApiError("Não autorizado"), HttpStatus.UNAUTHORIZED);
+            return new ResponseEntity<>(new ApiError(Constantes.UNAUTHORIZED), HttpStatus.UNAUTHORIZED);
         }
 
         if(!this.userService.checkLastLogin(user)){
-            return new ResponseEntity<>(new ApiError("Não autorizado"), HttpStatus.UNAUTHORIZED);
+            return new ResponseEntity<>(new ApiError(Constantes.INVALID_SESSION), HttpStatus.UNAUTHORIZED);
         }
 
         return new ResponseEntity<>(this.userService.getUser(id), HttpStatus.ACCEPTED);
